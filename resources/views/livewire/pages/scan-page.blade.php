@@ -1,3 +1,2 @@
-<div>
-    {{-- Care about people's approval and you will be their prisoner. --}}
-</div>
+<div id="reader" class="h-screen w-full"></div>
+<script src="{{ asset("js/qr/scanner.js") }}" type="text/javascript"></script>

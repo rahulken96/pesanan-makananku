@@ -68,7 +68,7 @@
                 </p>
             </div>
         </div>
-        <div wire:loading.remove>
+        <div wire:loading.remove>        
         @if ($term == "")
             <div>
                 <div class="container flex items-center justify-between">
