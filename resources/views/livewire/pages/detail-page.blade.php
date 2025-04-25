@@ -20,7 +20,7 @@
                     src="{{ asset("assets/icons/spoon-icon.svg") }}"
                     alt="Sold"
                 />
-                <span class="text-sm font-semibold">12 Terjual</span>
+                <span class="text-sm font-semibold">{{ $food->total_sold ?? 0 }} Terjual</span>
             </div>
             <div
                 class="{{ $food->percent ? "block" : "invisible" }} relative flex items-center justify-center gap-1.5 rounded-full bg-cover px-2 py-1.5"

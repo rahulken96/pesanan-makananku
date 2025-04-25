@@ -22,7 +22,7 @@ class TransactionController extends Controller
 
     public function __construct()
     {
-        $xenditKey = env('XENDIT_KEY') || config('xendit.secret_key');
+        $xenditKey = config('xendit.secret_key');
         Configuration::setXenditKey($xenditKey);
         $this->apiInstance = new InvoiceApi();
     }

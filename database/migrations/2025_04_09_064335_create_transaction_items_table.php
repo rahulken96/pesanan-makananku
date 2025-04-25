@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transaction_items', function (Blueprint $table) {
             $table->id();
-            $table->int('transaction_id')->constrained('transactions')->cascadeOnDelete();
-            $table->int('foods_id')->constrained('foods')->cascadeOnDelete();
+            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
+            $table->foreignId('foods_id')->constrained('foods')->cascadeOnDelete();
             $table->int('quantity');
             $table->int('price');
             $table->int('subtotal');

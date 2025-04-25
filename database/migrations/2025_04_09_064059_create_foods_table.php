@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('foods', function (Blueprint $table) {
             $table->id();
-            $table->int('categories_id')->constrained('categories')->cascadeOnDelete();
-            $table->string('name');
+            $table->foreignId('categories_id')->constrained('categories')->cascadeOnDelete();
+            $table->text('name');
             $table->string('description');
             $table->string('image');
             $table->double('price');

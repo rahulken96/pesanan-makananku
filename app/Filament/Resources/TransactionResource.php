@@ -2,30 +2,39 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TransactionItemsResource\Pages\ListTransactionItems;
-use App\Filament\Resources\TransactionResource\Pages;
-use App\Filament\Resources\TransactionResource\RelationManagers;
-use App\Models\Transaction;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+
 use Filament\Tables\Table;
+use App\Models\Transaction;
+use App\Models\TransactionItems;
+use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Support\Htmlable;
+
+use App\Filament\Resources\TransactionResource\Pages;
+use App\Filament\Resources\TransactionItemsResource\Pages\EditTransactionItems;
+use App\Filament\Resources\TransactionItemsResource\Pages\ListTransactionItems;
+use App\Filament\Resources\TransactionItemsResource\Pages\CreateTransactionItems;
 
 class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
     protected static ?string $navigationLabel = 'Transaksi';
 
     protected static ?string $label = 'Transaksi';
 
     protected static ?string $pluralLabel = 'List Transaksi';
+
+    public static function getRecordTitle(?Model $record): string|null|Htmlable
+    {
+        return $record->name;
+    }
 
     public static function form(Form $form): Form
     {
@@ -47,9 +56,14 @@ class TransactionResource extends Resource
                 Forms\Components\TextInput::make('checkout_link')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('barcodes_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\FileUpload::make('barcodes_id')
+                    ->label('QR Code')
+                    ->image() // Hanya menerima file gambar
+                    ->directory('qr_code') // Direktori penyimpanan
+                    ->disk('public') // Disk penyimpanan
+                    ->default(function ($record) {
+                        return $record->barcodes->image ?? null;
+                    }),
                 Forms\Components\TextInput::make('payment_method')
                     ->required()
                     ->maxLength(255),
@@ -119,14 +133,6 @@ class TransactionResource extends Resource
                         'danger' => fn ($state): bool => in_array($state, ['FAILED', 'EXPIRED']),
                     ])
                     ->searchable(),
-                Tables\Columns\TextColumn::make('external_id')
-                    ->label('External ID')
-                    ->alignCenter()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('checkout_link')
-                    ->label('Link URL')
-                    ->alignCenter()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->alignCenter()
                     ->dateTime()
@@ -140,7 +146,7 @@ class TransactionResource extends Resource
             ])
             ->filters([])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Action::make('Lihat Transaksi')
                     ->color('success')
                     ->url(
@@ -167,5 +173,10 @@ class TransactionResource extends Resource
             'edit' => Pages\EditTransaction::route('/{record}/edit'),
             'transaction-items.index' => ListTransactionItems::route('/{trxId}/transaction')
         ];
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
     }
 }

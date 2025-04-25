@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('barcodes', function (Blueprint $table) {
             $table->id();
-            $table->int('users_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
             $table->string('table_number');
             $table->string('image');
             $table->string('qr_value');

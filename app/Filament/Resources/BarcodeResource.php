@@ -2,22 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BarcodeResource\Pages;
-use App\Filament\Resources\BarcodeResource\RelationManagers;
-use App\Models\Barcode;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Barcode;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
+use App\Filament\Resources\BarcodeResource\Pages;
 
 class BarcodeResource extends Resource
 {
     protected static ?string $model = Barcode::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-qr-code';
 
     protected static ?string $navigationLabel = 'Barcode / Qr';
 
@@ -111,5 +109,10 @@ class BarcodeResource extends Resource
             'create' => Pages\CreateQr::route('/create'),
             'edit' => Pages\EditBarcode::route('/{record}/edit'),
         ];
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
     }
 }

@@ -10,10 +10,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FoodsResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\FoodsResource\RelationManagers;
 
 class FoodsResource extends Resource
 {
@@ -138,7 +135,7 @@ class FoodsResource extends Resource
                     ->color(fn (bool $state) => $state ? 'success' : 'danger')
                     ->tooltip(fn (bool $state) => $state ? 'Promo Aktif' : 'Tidak Promo')
                     ->alignCenter()
-                    ->sortable(),
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('categories.name')
                     ->label('Kategori')
                     ->searchable(),
